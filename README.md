@@ -1,19 +1,59 @@
 # Projeto Front-End
 
-Front-end simples em React para o projeto do segundo bimestre.
+Front-end React do projeto do segundo bimestre.
 
-## Conteúdo
+## O que este repositório entrega na Parte 2
 
-- `src/App.jsx`: interface que consome a API do backend.
-- `vite.config.js`: configuração Vite.
-- `.github/workflows/release.yml`: workflow GitHub Actions acionado por tag.
-- `media/`: espaço para evidências de deploy.
+- `Dockerfile` para gerar a imagem com Nginx.
+- `.dockerignore` para reduzir o contexto de build.
+- Integração com a API do Render via `VITE_API_URL`.
+- Preparação para deploy na Vercel.
+- Evidências de execução e deploy na pasta `media/`.
+
+## Como o front conversa com a API
+
+O aplicativo consome as rotas:
+
+- `GET /`
+- `GET /v1`
+
+A URL base da API é informada por `VITE_API_URL`.
+
+Exemplo local:
+
+```bash
+VITE_API_URL=http://localhost:5000
+```
+
+Exemplo em produção:
+
+```bash
+VITE_API_URL=https://sua-api.onrender.com
+```
+
+## Execução local sem Docker
+
+```bash
+npm install
+npm run dev
+```
+
+## Execução com Docker
+
+```bash
+docker build --build-arg VITE_API_URL=http://localhost:5000 -t projeto-front .
+docker run --rm -p 8080:80 projeto-front
+```
 
 ## Deploy
 
-Este repositório foi preparado para deploy na Vercel via GitHub Actions usando os secrets:
-- `VERCEL_TOKEN`
-- `VERCEL_ORG_ID`
-- `VERCEL_PROJECT_ID`
+O deploy real continua na Vercel.
 
-O workflow é acionado exclusivamente por push de tags no formato `vX.Y.Z`.
+## Evidências
+
+A pasta `media/` deve conter prints de:
+
+1. Front aberto na porta `8080` em container com Nginx.
+2. Front consumindo a API do back-end em container na porta `5000`.
+3. Painel `Deployments` da Vercel.
+4. Evidência da tag `v1.1.0`.
